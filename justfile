@@ -5,11 +5,12 @@ name := "python_module_10"
 
 
 src-dir := root-dir / "src"
+tools-dir := root-dir / "tools"
 dist-dir := root-dir / "dist"
 stage-dir := dist-dir / name + "_turnin"
 
 
-_default:
+help:
     @just -l
 
 
@@ -102,4 +103,9 @@ fclean: clean
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # tools
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# run the interactive test-data generator
+[group('tools')]
+gen-data *args:
+    uv run python {{tools-dir}}/data_generator.py {{args}}
 
