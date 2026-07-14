@@ -43,6 +43,7 @@ publish tag msg:
 # checks then stage + tarball
 [group('dist')]
 dist tag="":
+    just clean
     just checks-dist
     just stage
     tar -czf {{dist-dir}}/{{name}}_turnin_{{tag}}.tar.gz -C {{stage-dir}} .

@@ -14,7 +14,7 @@ def power_filter(
 
 
 def spell_transformer(spells: list[str]) -> list[str]:
-    return list(map(lambda s: f"*{s}*", spells))
+    return list(map(lambda s: f"* {s} *", spells))
 
 
 def mage_stats(mages: list[dict[str, Any]]) -> dict[str, Any]:

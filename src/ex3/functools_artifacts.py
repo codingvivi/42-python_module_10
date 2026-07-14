@@ -9,7 +9,7 @@ def spell_reducer(spells: list[int], operation: str) -> int:
         return 0
     ops: dict[str, Callable[[int, int], int]] = {
         "add": operator.add,
-        "mul": operator.mul,
+        "multiply": operator.mul,
         "max": max,
         "min": min,
     }
@@ -23,7 +23,7 @@ def partial_enchanter(
 ) -> dict[str, Callable[..., str]]:
     out: dict[str, Callable[..., str]] = {
         element: functools.partial(base_enchantment, 50, element)
-        for element in ["fire", "ice", "lighting"]
+        for element in ["fire", "ice", "lightning"]
     }
 
     return out
@@ -60,7 +60,7 @@ def main() -> None:
     print("Testing spell reducer...")
     powers = [10, 20, 30, 40]
     print(f"Sum: {spell_reducer(powers, 'add')}")
-    print(f"Product: {spell_reducer(powers, 'mul')}")
+    print(f"Product: {spell_reducer(powers, 'multiply')}")
     print(f"Max: {spell_reducer(powers, 'max')}")
 
     print("\nTesting partial enchanter...")
