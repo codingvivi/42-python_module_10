@@ -18,8 +18,10 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     return functools.reduce(ops[operation], spells)
 
 
-def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-    out = {
+def partial_enchanter(
+    base_enchantment: Callable[..., str],
+) -> dict[str, Callable[..., str]]:
+    out: dict[str, Callable[..., str]] = {
         element: functools.partial(base_enchantment, 50, element)
         for element in ["fire", "ice", "lighting"]
     }
@@ -47,8 +49,8 @@ def spell_dispatcher() -> Callable[[Any], str]:
     def _(spell: str) -> str:
         return spell
 
-    @cast.register
-    def _(spell: list) -> str:
+    @cast.register(list)
+    def _(spell: list[Any]) -> str:
         return f"{len(spell)} spells"
 
     return cast

@@ -1,10 +1,15 @@
-def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+from typing import Any
+
+
+def artifact_sorter(artifacts: list[dict[str, Any]]) -> list[dict[str, Any]]:
     # lambda arg: expression
     # always only one expression allowed!
     return sorted(artifacts, key=lambda a: a["power"], reverse=True)
 
 
-def power_filter(mages: list[dict], min_power: int) -> list[dict]:
+def power_filter(
+    mages: list[dict[str, Any]], min_power: int
+) -> list[dict[str, Any]]:
     return list(filter(lambda m: m["power"] >= min_power, mages))
 
 
@@ -12,13 +17,15 @@ def spell_transformer(spells: list[str]) -> list[str]:
     return list(map(lambda s: f"*{s}*", spells))
 
 
-def mage_stats(mages: list[dict]) -> dict:
+def mage_stats(mages: list[dict[str, Any]]) -> dict[str, Any]:
     # Callable[[arg1, arg2, ...], ret]
     return {
         "max_power": max(mages, key=lambda m: m["power"])["power"],
         "min_power": min(mages, key=lambda m: m["power"])["power"],
         # map returns an iterable that sum then consumes
-        "avg_power": round(sum(map(lambda m: m["power"], mages)) / len(mages), 2),
+        "avg_power": round(
+            sum(map(lambda m: m["power"], mages)) / len(mages), 2
+        ),
     }
 
 
@@ -41,7 +48,7 @@ def main() -> None:
 
     print("Testing artifact sorter...")
     ranked = artifact_sorter(artifacts)
-    for stronger, weaker in zip(ranked, ranked[1:]):
+    for stronger, weaker in zip(ranked, ranked[1:], strict=False):
         print(
             f"{stronger['name']} ({stronger['power']} power) comes before "
             f"{weaker['name']} ({weaker['power']} power)"

@@ -1,7 +1,9 @@
 from collections.abc import Callable
 
-
 # Every spell follows the same contract: (target, power) -> description
+Spell = Callable[[str, int], str]
+
+
 def fireball(target: str, power: int) -> str:
     return f"Fireball hits {target} for {power} damage"
 
@@ -10,7 +12,9 @@ def heal(target: str, power: int) -> str:
     return f"Heal restores {target} for {power} HP"
 
 
-def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
+def spell_combiner(
+    spell1: Spell, spell2: Spell
+) -> Callable[[str, int], tuple[str, str]]:
     def combined(target: str, power: int) -> tuple[str, str]:
         result_1: str = spell1(target, power)
         result_2: str = spell2(target, power)
@@ -19,21 +23,25 @@ def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
     return combined
 
 
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
+def power_amplifier(base_spell: Spell, multiplier: int) -> Spell:
     def amplify(target: str, power: int) -> str:
         return base_spell(target, power * multiplier)
 
     return amplify
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable:
+def conditional_caster(
+    condition: Callable[[str, int], bool], spell: Spell
+) -> Spell:
     def cast(target: str, power: int) -> str:
-        return spell(target, power) if condition(target, power) else "Spell fizzled"
+        if condition(target, power):
+            return spell(target, power)
+        return "Spell fizzled"
 
     return cast
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
+def spell_sequence(spells: list[Spell]) -> Callable[[str, int], list[str]]:
     def combined(target: str, power: int) -> list[str]:
         return [s(target, power) for s in spells]
 
